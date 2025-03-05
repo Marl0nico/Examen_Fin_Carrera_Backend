@@ -1,0 +1,22 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 20
+      arrivalRate: 5 #5 usuarios por segundo
+scenarios:
+  - flow:
+      - post:
+          url: "/api/login"
+          json:
+            email: "pedro@gmail.com"
+            password: "123456789"
+          headers:
+            Content-Type: "application/json"
+          capture:
+            - json: "$.token"
+              as: "token"
+      - get:
+          url: "/api/usuario/usuarios"
+          headers:
+            Authorization: "Bearer {{ token }}"
+
